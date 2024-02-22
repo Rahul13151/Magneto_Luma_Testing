@@ -1,6 +1,5 @@
 package Pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -11,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class HomePage1 {
+public class HomePage {
     WebDriver driver;
     WebDriverWait wait;
     Actions actions;
@@ -30,7 +29,7 @@ public class HomePage1 {
     @FindBy(id = "ui-id-25")
     WebElement bagsButton;
 
-    public HomePage1(WebDriver driver) {
+    public HomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
@@ -45,6 +44,8 @@ public class HomePage1 {
     public void openUserAccountPage(){
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(dropDownList));
+        //Sometimes Explicit wait unable to handle the late activation of dropDownList Button. Therefore thread.sleep is necessary.
+        try {Thread.sleep(2000);} catch (InterruptedException e) {throw new RuntimeException(e);}
         dropDownList.click();
         wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         wait.until(ExpectedConditions.elementToBeClickable(myAccountButton));

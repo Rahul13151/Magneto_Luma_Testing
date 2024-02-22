@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -15,7 +16,7 @@ public class Assignment_Flow {
     AddressPage objectAddressPage;
     BagsPage objectBagsPage;
     CompareProductPage objectCompareProductPage;
-    HomePage1 objectHomePage1;
+    HomePage objectHomePage;
     NewAddressPage objectNewAddressPage;
     ProductPage objectProductPage;
     SignInPage objectSignInPage;
@@ -29,7 +30,7 @@ public class Assignment_Flow {
     public void setUp(){
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
-        objectHomePage1 = new HomePage1(driver);
+        objectHomePage = new HomePage(driver);
         objectSignInPage = new SignInPage(driver);
         objectAddressPage = new AddressPage(driver);
         objectBagsPage = new BagsPage(driver);
@@ -45,11 +46,11 @@ public class Assignment_Flow {
     public void TestCase1(){
         driver.get("https://magento.softwaretestingboard.com/");
         driver.manage().window().maximize();
-        objectHomePage1.getTitle();
+        objectHomePage.getTitle();
     }
     @Test(priority = 1)
     public void SignIn(){
-        objectHomePage1.clickSignInButton();
+        objectHomePage.clickSignInButton();
         objectSignInPage.setEmailValue();
         objectSignInPage.setPasswordValue();
         objectSignInPage.clickSignInButton();
@@ -57,22 +58,29 @@ public class Assignment_Flow {
     }
     @Test(priority = 2)
     public void addAddress()  {
-        objectHomePage1.openUserAccountPage();
+        objectHomePage.openUserAccountPage();
         objectUserAccountPage.clickManageAddress();
         objectAddressPage.clickAddNewAddressButton();
         objectNewAddressPage.enterAddressDetails();
         objectNewAddressPage.clickSaveAddressButton();
-        objectNewAddressPage.redirectToHomePage();
     }
     @Test(priority = 3)
+    public void changeShippingAddress(){
+        objectAddressPage.clickChangeShippingAddressBtn();
+        objectNewAddressPage.updateCityAndZip("12346","Washington");
+        objectNewAddressPage.clickSaveAddressButton();
+        objectNewAddressPage.redirectToHomePage();
+
+    }
+    @Test(priority = 4)
     public void wishlistTest(){
-        objectHomePage1.openWhatsNewSection();
+        objectHomePage.openWhatsNewSection();
         objectWhatisNewPage.addThreeItemsToWishList();
         objectWhatisNewPage.visitWishlistPage();
         objectWhatisNewPage.removeFirstFromWishList();
         objectWhatisNewPage.lastItemAddToCart();
     }
-    @Test(priority = 4) 
+    @Test(priority = 5)
     public void compareTest(){
         objectWhatisNewPage.openGearBagsSection();
         objectBagsPage.add2ItemsToCompareList();
@@ -80,11 +88,12 @@ public class Assignment_Flow {
         objectCompareProductPage.addElementToCartWithMoreReviews();
         objectCompareProductPage.removeComparedElements();
     }
-    @Test(priority = 5)
+    @Test(priority = 6)
     public void cartFunctionality(){
         objectCompareProductPage.openCartPage();
         objectCartPage.printSizeOfCart();
-
+        objectCartPage.increaseQuantityOfFirstCartItem();
+        objectCartPage.printSizeOfCart();
         objectCartPage.printOrderTotal();
         objectCartPage.clickProceedToCheckout();
         objectCartPage.selectFixedShippingMethod();
@@ -92,5 +101,10 @@ public class Assignment_Flow {
         objectCartPage.clickPlaceOrder();
         objectCartPage.printOrderNumber();
     }
-
+    @AfterTest
+    public void TearDown(){
+        if(driver!=null){
+            driver.quit();
+        }
+    }
 }

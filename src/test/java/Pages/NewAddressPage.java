@@ -56,4 +56,11 @@ public class NewAddressPage {
     public void redirectToHomePage(){
         lumaLogo.click();
     }
+    public void updateCityAndZip(String zip,String city){
+        zipInputBox.clear();
+        zipInputBox.sendKeys(zip);
+        cityInputBox.clear();
+        cityInputBox.sendKeys(city);
+
+    }
 }

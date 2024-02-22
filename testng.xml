@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="Luma_Automation">
+        <classes>
+            <class name="Test_Cases.Assignment_Flow">
+                <methods>
+                    <include name="TestCase1"/>
+                    <include name="SignIn"/>
+                    <include name="addAddress"/>
+                    <include name="changeShippingAddress"/>
+                    <include name="wishlistTest"/>
+                    <include name="compareTest"/>
+                    <include name="cartFunctionality"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

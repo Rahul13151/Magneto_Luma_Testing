@@ -29,20 +29,28 @@ public class CartPages {
     WebElement placeOrderBtn;
     @FindBy(css=".order-number")
     WebElement orderNumber;
+    @FindBy(xpath = "(//input[@title='Qty'])[1]")
+    WebElement firstItemQuantity;
+    @FindBy(css = "button[title='Update Shopping Cart']")
+    WebElement updateCartBtn;
     public CartPages(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
     public void printSizeOfCart(){
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(updateCartBtn));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(8));
+        wait.until(ExpectedConditions.elementToBeClickable(proceedToCheckoutBtn));
         int cartSize = Integer.parseInt(sizeOfCart.getText());
-        System.out.println("Cart Size = "+cartSize);
+        System.out.println("Latest Cart Size = "+cartSize);
     }
     public void printOrderTotal(){
         String orderPrice = (orderTotal.getText());
         System.out.println("Order Total : "+orderPrice);
     }
     public void clickProceedToCheckout(){
-        wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(8));
         wait.until(ExpectedConditions.elementToBeClickable(proceedToCheckoutBtn));
         proceedToCheckoutBtn.click();
     }
@@ -59,17 +67,23 @@ public class CartPages {
     public void clickPlaceOrder(){
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(placeOrderBtn));
-        // Problem with site thread.sleep is necessary to use as explicit wait is unable to meet the the required condition
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+        // Problem with site thread.sleep is necessary to use as explicit wait is unable to meet the required condition
+        try {Thread.sleep(3000);} catch (InterruptedException e) {throw new RuntimeException(e);}
         placeOrderBtn.click();
     }
     public void printOrderNumber(){
         String orderNum = orderNumber.getText();
         System.out.println("Order Number is : " + orderNum);
+    }
+    public void increaseQuantityOfFirstCartItem(){
+        String quantity = firstItemQuantity.getAttribute("value");
+        String newQuantity = Integer.toString(Integer.parseInt(quantity)+1);
+        firstItemQuantity.clear();
+        firstItemQuantity.sendKeys(newQuantity);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(updateCartBtn));
+        updateCartBtn.click();
+        // Problem with site thread.sleep is necessary to use as explicit wait is unable to meet the required condition
+        try {Thread.sleep(8000);} catch (InterruptedException e) {throw new RuntimeException(e);}
     }
 }

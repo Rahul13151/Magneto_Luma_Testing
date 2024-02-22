@@ -12,6 +12,8 @@ import java.time.Duration;
 public class AddressPage {
     WebDriver driver;
     WebDriverWait wait;
+    @FindBy(xpath = "//span[contains(text(),'Change Shipping')]/parent::a")
+    WebElement changeShippingAddBtn;
     @FindBy(css="button[title='Add New Address']")
     WebElement addNewAddressButton;
 
@@ -23,5 +25,10 @@ public class AddressPage {
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(addNewAddressButton));
         addNewAddressButton.click();
+    }
+    public void clickChangeShippingAddressBtn(){
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(changeShippingAddBtn));
+        changeShippingAddBtn.click();
     }
 }
